@@ -3,11 +3,11 @@ import React from "react";
 
 const MainLayout = ({ children }) => {
   return (
-    <body>
+    <div>
       <Navbar></Navbar>
 
-      <main>{children}</main>
-    </body>
+      <div>{children}</div>
+    </div>
   );
 };
 

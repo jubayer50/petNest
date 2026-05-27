@@ -1,5 +1,7 @@
 "use client";
 
+import { ArrowRightFromSquare, Heart, Person, Plus } from "@gravity-ui/icons";
+import { Button } from "@heroui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -11,37 +13,39 @@ const Sidebar = () => {
       <li>
         <Link
           href={"/profile"}
-          className={`${pathname == "/profile" ? "text-[#ED8262] font-bold" : ""} font-medium`}
+          className={`${pathname == "/profile" ? "text-[#ED8262] font-bold" : ""} font-medium flex items-center gap-2`}
         >
-          Profile
+          <Person></Person> Profile
         </Link>
       </li>
 
       <li>
         <Link
           href={"/add-pet"}
-          className={`${pathname == "/add-pet" ? "text-[#ED8262] font-bold" : ""} font-medium`}
+          className={`${pathname == "/add-pet" ? "text-[#ED8262] font-bold" : ""} font-medium flex items-center gap-2`}
         >
-          Add Pet
+          <Plus></Plus> Add Pet
         </Link>
       </li>
 
       <li>
         <Link
           href={"/my-request"}
-          className={`${pathname == "/my-request" ? "text-[#ED8262] font-bold" : ""} font-medium`}
+          className={`${pathname == "/my-request" ? "text-[#ED8262] font-bold" : ""} font-medium flex items-center gap-2`}
         >
-          My Request
+          <Heart></Heart> My Request
         </Link>
       </li>
     </>
   );
 
   return (
-    <div className="bg-gray-200 max-w-54 w-full py-5 hidden md:flex flex-col justify-between px-8">
+    <div className="bg-gray-300 max-w-54 w-full py-5 hidden md:flex flex-col justify-between px-8">
       <ul className="space-y-5 mt-3">{sidebarLinks}</ul>
 
-      <p className="">Logout</p>
+      <Button variant="ghost" className={"text-red-600 rounded-md"}>
+        <ArrowRightFromSquare></ArrowRightFromSquare> Logout
+      </Button>
     </div>
   );
 };
