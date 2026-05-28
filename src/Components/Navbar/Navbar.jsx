@@ -92,7 +92,7 @@ const Navbar = ({ sideBarLinks }) => {
 
           <div
             onClick={() => setShowProfile(!showProfile)}
-            className="px-2.5 py-1.5 hover:bg-white rounded-md relative transition-all duration-300"
+            className="px-2.5 py-1.5 hover:bg-gray-200 rounded-md relative transition-all duration-300"
           >
             <div className="flex items-center gap-3">
               <div className="h-8 w-8 rounded-full bg-[#ED8262]">
@@ -100,14 +100,14 @@ const Navbar = ({ sideBarLinks }) => {
               </div>
 
               <ChevronDown
-                className={`${showProfile ? "rotate-180 transition-all duration-300" : ""}`}
+                className={`${showProfile ? "rotate-180 transition-all duration-300" : ""} text-black`}
               ></ChevronDown>
             </div>
 
             {showProfile && (
-              <div className="absolute top-13.5 right-0 px-3 py-2 border rounded-md transition-all duration-300">
+              <div className="absolute top-13.5 right-0 bg-white px-3 py-2 border rounded-md transition-all duration-300">
                 <Link href={"/dashboard"}>
-                  <p className="hover:bg-gray-200 px-2 py-.5 rounded-sm transition-all duration-300 flex items-center gap-2">
+                  <p className="hover:bg-gray-200 px-2 py-.5 rounded-sm transition-all duration-300 flex items-center gap-2 text-black">
                     <ChartAreaStacked></ChartAreaStacked> Dashboard
                   </p>
                 </Link>
