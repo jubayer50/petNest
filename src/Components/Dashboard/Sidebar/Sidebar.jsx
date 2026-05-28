@@ -43,7 +43,7 @@ const Sidebar = () => {
     <div className="bg-gray-300 max-w-54 w-full py-5 hidden md:flex flex-col justify-between px-8">
       <ul className="space-y-5 mt-3">{sidebarLinks}</ul>
 
-      <Button variant="ghost" className={"text-red-600 rounded-md"}>
+      <Button variant="ghost" className={"text-red-600 rounded-md w-full"}>
         <ArrowRightFromSquare></ArrowRightFromSquare> Logout
       </Button>
     </div>
