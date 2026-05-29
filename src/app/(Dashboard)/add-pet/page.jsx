@@ -21,28 +21,13 @@ const AddPetPage = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+
+    const formData = new FormData(form);
     const petData = Object.fromEntries(formData.entries());
 
-    /*
- {
-    "pet_name": "Timothy Reynolds",
-    "species": "bird",
-    "breed": "Voluptatem Atque re",
-    "pet_image": "Doloribus mollit vol",
-    "pet_gender": "female",
-    "pet_age": "85",
-    "pet_health": "healthy",
-    "pet_vaccination": "not-vaccinated",
-    "pet_location": "A culpa earum omnis ",
-    "adoption_fee": "Consequatur In dolo",
-    "pet_description": "Perspiciatis tempor",
-    "pet_owner_email": "jubayer@gmail.com",
-    "user_id": "6a18a4748e58f9b1336b448c"
-}
- */
-
     petData["user_id"] = user?.id;
+    petData["status"] = "Available";
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/pets`, {
       method: "POST",
@@ -53,7 +38,7 @@ const AddPetPage = () => {
 
     if (data) {
       toast.success("pet added successfully!");
-      e.currentTarget.reset();
+      form.reset();
     }
   };
 
@@ -118,6 +103,15 @@ const AddPetPage = () => {
                     textValue="Bird"
                   >
                     Bird
+                    <ListBox.ItemIndicator />
+                  </ListBox.Item>
+
+                  <ListBox.Item
+                    className="hover:rounded-md"
+                    id="other"
+                    textValue="Other"
+                  >
+                    Other
                     <ListBox.ItemIndicator />
                   </ListBox.Item>
                 </ListBox>

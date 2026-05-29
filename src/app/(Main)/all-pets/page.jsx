@@ -1,9 +1,26 @@
-import React from "react";
+import PetCard from "@/Components/AllPets/PetCard/PetCard";
+import { getPets } from "@/lib/data";
 
-const AllPetsPage = () => {
+const AllPetsPage = async () => {
+  const pets = await getPets();
+
   return (
-    <div className="max-w-330 mx-auto px-3">
-      <h2 className="font-medium text-center mt-5">All Pets</h2>
+    <div className="max-w-330 mx-auto px-3 mt-5 mb-20">
+      <div className="text-center">
+        <h2 className="font-semibold text-3xl md:text-4xl text-center">
+          Find Your Perfect Companion
+        </h2>
+        <p className="mt-2 max-w-130 mx-auto">
+          Explore adorable pets waiting for a loving forever home and discover
+          the perfect friend for your family.
+        </p>
+      </div>
+
+      <div className="mt-10 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {pets.map((pet) => (
+          <PetCard key={pet._id} pet={pet}></PetCard>
+        ))}
+      </div>
     </div>
   );
 };
