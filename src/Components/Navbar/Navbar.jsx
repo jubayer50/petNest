@@ -1,21 +1,25 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@heroui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import ThemeSwitch from "../ThemeSwitch/ThemeSwitch";
 import {
   ArrowRightFromSquare,
   ChartAreaStacked,
   ChevronDown,
 } from "@gravity-ui/icons";
-import ThemeSwitch from "../ThemeSwitch/ThemeSwitch";
+import { authClient } from "@/lib/auth-client";
+import { Button } from "@heroui/react";
 
 const Navbar = ({ sideBarLinks }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
 
   const pathname = usePathname();
+
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
 
   const links = (
     <>
@@ -90,37 +94,49 @@ const Navbar = ({ sideBarLinks }) => {
             <ThemeSwitch></ThemeSwitch>
           </div>
 
-          <div
-            onClick={() => setShowProfile(!showProfile)}
-            className="px-2.5 py-1.5 hover:bg-gray-200 rounded-md relative transition-all duration-300"
-          >
-            <div className="flex items-center gap-3">
-              <div className="h-8 w-8 rounded-full bg-[#ED8262]">
-                {/* user image wil come */}
+          {user ? (
+            <div
+              onClick={() => setShowProfile(!showProfile)}
+              className="px-2.5 py-1.5 hover:bg-gray-200 rounded-md relative transition-all duration-300"
+            >
+              <div className="flex items-center gap-3">
+                <div className="h-8 w-8 rounded-full bg-[#ED8262]">
+                  {/* user image wil come */}
+                </div>
+
+                <ChevronDown
+                  className={`${showProfile ? "rotate-180 transition-all duration-300" : ""} text-black`}
+                ></ChevronDown>
               </div>
 
-              <ChevronDown
-                className={`${showProfile ? "rotate-180 transition-all duration-300" : ""} text-black`}
-              ></ChevronDown>
+              {showProfile && (
+                <div className="absolute top-13.5 right-0 bg-white px-3 py-2 border rounded-md transition-all duration-300">
+                  <Link href={"/dashboard"}>
+                    <p className="hover:bg-gray-200 px-2 py-.5 rounded-sm transition-all duration-300 flex items-center gap-2 text-black">
+                      <ChartAreaStacked></ChartAreaStacked> Dashboard
+                    </p>
+                  </Link>
+
+                  <Button
+                    onClick={async () => await authClient.signOut()}
+                    variant="ghost"
+                    className="hover:bg-gray-200 px-2 py-.5 rounded-sm transition-all duration-300 mt-1.5
+               text-red-600 flex items-center gap-2 w-full justify-start pl-3.5"
+                  >
+                    <ArrowRightFromSquare></ArrowRightFromSquare> Logout
+                  </Button>
+                </div>
+              )}
             </div>
-
-            {showProfile && (
-              <div className="absolute top-13.5 right-0 bg-white px-3 py-2 border rounded-md transition-all duration-300">
-                <Link href={"/dashboard"}>
-                  <p className="hover:bg-gray-200 px-2 py-.5 rounded-sm transition-all duration-300 flex items-center gap-2 text-black">
-                    <ChartAreaStacked></ChartAreaStacked> Dashboard
-                  </p>
-                </Link>
-
-                <p
-                  className="hover:bg-gray-200 px-2 py-.5 rounded-sm transition-all duration-300 mt-1.5
-               text-red-600 flex items-center gap-2"
-                >
-                  <ArrowRightFromSquare></ArrowRightFromSquare> Logout
-                </p>
-              </div>
-            )}
-          </div>
+          ) : (
+            <div>
+              <Link href={"/login"}>
+                <Button size="sm" className={"bg-[#ED8262] rounded-md"}>
+                  Sign In
+                </Button>
+              </Link>
+            </div>
+          )}
         </div>
       </header>
 

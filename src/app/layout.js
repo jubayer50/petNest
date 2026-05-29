@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NextThemeProvider from "./providers/NextThemeProvider";
+import { Toast } from "@heroui/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +28,8 @@ export default function RootLayout({ children }) {
       <body className="bg-background text-foreground">
         <NextThemeProvider>
           <main>{children}</main>
+
+          <Toast.Provider />
         </NextThemeProvider>
       </body>
     </html>

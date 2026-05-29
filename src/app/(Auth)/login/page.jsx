@@ -1,33 +1,50 @@
 "use client";
 
+import { authClient } from "@/lib/auth-client";
 import LoginImage from "../../../../public/assets/login.jpg";
 
 import { Eye, EyeSlash } from "@gravity-ui/icons";
-import { Button } from "@heroui/react";
+import { Button, toast } from "@heroui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
+import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
 
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
-
     reset,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const userData = {
       email: data.email,
       password: data.password,
+      rememberMe: data.rememberMe,
     };
 
-    console.log(userData, "from login page");
+    const { data: authData, error } = await authClient.signIn.email({
+      email: userData.email,
+      password: userData.password,
+      rememberMe: userData.rememberMe,
+    });
+
+    if (authData) {
+      toast.success("Login Successful!");
+      router.push("/");
+    }
+
+    if (error) {
+      toast.danger(`${error.message}`);
+    }
 
     reset();
   };
@@ -86,12 +103,12 @@ const LoginPage = () => {
                 />
 
                 {/* eye of or on */}
-                <button
+                <div
                   className="absolute top-[50%] translate-y-[-50%] right-2"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <Eye></Eye> : <EyeSlash></EyeSlash>}
-                </button>
+                </div>
               </div>
 
               {errors.password && (
@@ -105,11 +122,11 @@ const LoginPage = () => {
             <div>
               <input
                 type="checkbox"
-                id="rememberPassword"
-                {...register("rememberPassword")}
+                id="rememberMe"
+                {...register("rememberMe")}
               />
-              <label htmlFor="rememberPassword" className="ml-1">
-                Remember password
+              <label htmlFor="rememberMe" className="ml-1">
+                Remember Me
               </label>
             </div>
 

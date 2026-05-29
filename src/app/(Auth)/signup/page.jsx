@@ -1,8 +1,10 @@
 "use client";
 
+import { authClient } from "@/lib/auth-client";
 import { Eye, EyeSlash } from "@gravity-ui/icons";
-import { Button } from "@heroui/react";
+import { Button, toast } from "@heroui/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
@@ -10,6 +12,9 @@ import { FcGoogle } from "react-icons/fc";
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConformPassword, setShowConformPassword] = useState(false);
+
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -20,16 +25,29 @@ const SignUpPage = () => {
 
   const password = watch("password");
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const userData = {
       name: data.name,
       email: data.email,
       photoURL: data.photoURL,
       password: data.password,
-      rememberPassword: data.rememberPassword,
     };
 
-    console.log(userData, "from signup page remove co pa");
+    const { data: authData, error } = await authClient.signUp.email({
+      email: userData.email,
+      password: userData.password,
+      name: userData.name,
+      image: userData.photoURL,
+    });
+
+    if (authData) {
+      toast.success("Signup successful!");
+      router.push("/");
+    }
+
+    if (error) {
+      toast.danger(`${error.message}`);
+    }
 
     reset();
   };
@@ -113,12 +131,12 @@ const SignUpPage = () => {
               />
 
               {/* eye of or on */}
-              <button
+              <div
                 className="absolute top-[50%] translate-y-[-50%] right-2"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? <Eye></Eye> : <EyeSlash></EyeSlash>}
-              </button>
+              </div>
             </div>
 
             {errors.password && (
@@ -145,12 +163,12 @@ const SignUpPage = () => {
               />
 
               {/* eye of or on */}
-              <button
+              <div
                 className="absolute top-[50%] translate-y-[-50%] right-2"
                 onClick={() => setShowConformPassword(!showConformPassword)}
               >
                 {showConformPassword ? <Eye></Eye> : <EyeSlash></EyeSlash>}
-              </button>
+              </div>
             </div>
 
             {errors.conformPassword && (
@@ -158,18 +176,6 @@ const SignUpPage = () => {
                 {errors.conformPassword.message}
               </p>
             )}
-          </div>
-
-          {/* remember check box */}
-          <div>
-            <input
-              type="checkbox"
-              id="rememberPassword"
-              {...register("rememberPassword")}
-            />
-            <label htmlFor="rememberPassword" className="ml-1">
-              Remember password
-            </label>
           </div>
 
           {/* submit */}
