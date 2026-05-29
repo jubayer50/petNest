@@ -1,5 +1,7 @@
+"use client";
+
+import { authClient } from "@/lib/auth-client";
 import {
-  FieldError,
   Form,
   Input,
   Label,
@@ -8,10 +10,53 @@ import {
   Select,
   TextArea,
   Button,
+  toast,
 } from "@heroui/react";
 import React from "react";
 
 const AddPetPage = () => {
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const petData = Object.fromEntries(formData.entries());
+
+    /*
+ {
+    "pet_name": "Timothy Reynolds",
+    "species": "bird",
+    "breed": "Voluptatem Atque re",
+    "pet_image": "Doloribus mollit vol",
+    "pet_gender": "female",
+    "pet_age": "85",
+    "pet_health": "healthy",
+    "pet_vaccination": "not-vaccinated",
+    "pet_location": "A culpa earum omnis ",
+    "adoption_fee": "Consequatur In dolo",
+    "pet_description": "Perspiciatis tempor",
+    "pet_owner_email": "jubayer@gmail.com",
+    "user_id": "6a18a4748e58f9b1336b448c"
+}
+ */
+
+    petData["user_id"] = user?.id;
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/pets`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(petData),
+    });
+    const data = await res.json();
+
+    if (data) {
+      toast.success("pet added successfully!");
+      e.currentTarget.reset();
+    }
+  };
+
   return (
     <div className="max-w-330 mx-auto px-3 my-8">
       <div className="text-center">
@@ -25,8 +70,8 @@ const AddPetPage = () => {
       </div>
 
       <div className="mt-5 max-w-200 mx-auto">
-        <Form className="border rounded-md p-4 space-y-5">
-          <TextField isRequired>
+        <Form onSubmit={onSubmit} className="border rounded-md p-4 space-y-4">
+          <TextField name="pet_name" isRequired>
             <Label className="text-sm font-medium">Pet Name:</Label>
             <Input
               className="rounded-md border shadow-none"
@@ -35,7 +80,12 @@ const AddPetPage = () => {
           </TextField>
 
           <div className="flex flex-col md:flex-row gap-5">
-            <Select isRequired className="w-full" placeholder="Select one">
+            <Select
+              name="species"
+              isRequired
+              className="w-full"
+              placeholder="Select one"
+            >
               <Label>Species</Label>
               <Select.Trigger className={"rounded-md border shadow-none"}>
                 <Select.Value />
@@ -74,7 +124,7 @@ const AddPetPage = () => {
               </Select.Popover>
             </Select>
 
-            <TextField className={"w-full"}>
+            <TextField name="breed" className={"w-full"}>
               <Label className="text-sm font-medium">Breed:</Label>
               <Input
                 className="rounded-md border shadow-none"
@@ -83,7 +133,7 @@ const AddPetPage = () => {
             </TextField>
           </div>
 
-          <TextField className={"w-full"}>
+          <TextField name="pet_image" className={"w-full"}>
             <Label className="text-sm font-medium">Image URL:</Label>
             <Input
               className="rounded-md border shadow-none"
@@ -92,7 +142,12 @@ const AddPetPage = () => {
           </TextField>
 
           <div className="flex flex-col md:flex-row gap-5">
-            <Select isRequired className="w-full" placeholder="Select one">
+            <Select
+              name="pet_gender"
+              isRequired
+              className="w-full"
+              placeholder="Select one"
+            >
               <Label>Gender:</Label>
               <Select.Trigger className={"rounded-md border shadow-none"}>
                 <Select.Value />
@@ -122,7 +177,7 @@ const AddPetPage = () => {
               </Select.Popover>
             </Select>
 
-            <TextField className={"w-full"}>
+            <TextField name="pet_age" className={"w-full"}>
               <Label className="text-sm font-medium">Age:</Label>
               <Input
                 type="number"
@@ -133,7 +188,12 @@ const AddPetPage = () => {
           </div>
 
           <div className="flex flex-col md:flex-row gap-5">
-            <Select isRequired className="w-full" placeholder="Select one">
+            <Select
+              name="pet_health"
+              isRequired
+              className="w-full"
+              placeholder="Select one"
+            >
               <Label>Health Status:</Label>
               <Select.Trigger className={"rounded-md border shadow-none"}>
                 <Select.Value />
@@ -172,7 +232,12 @@ const AddPetPage = () => {
               </Select.Popover>
             </Select>
 
-            <Select isRequired className="w-full" placeholder="Select one">
+            <Select
+              name="pet_vaccination"
+              isRequired
+              className="w-full"
+              placeholder="Select one"
+            >
               <Label>Vaccination Status:</Label>
               <Select.Trigger className={"rounded-md border shadow-none"}>
                 <Select.Value />
@@ -213,7 +278,7 @@ const AddPetPage = () => {
           </div>
 
           <div className="flex flex-col md:flex-row gap-5">
-            <TextField className={"w-full"}>
+            <TextField name="pet_location" className={"w-full"}>
               <Label className="text-sm font-medium">Location:</Label>
               <Input
                 type="text"
@@ -222,7 +287,7 @@ const AddPetPage = () => {
               />
             </TextField>
 
-            <TextField className={"w-full"}>
+            <TextField name="adoption_fee" className={"w-full"}>
               <Label className="text-sm font-medium">Adoption Fee:</Label>
               <Input
                 type="text"
@@ -232,7 +297,7 @@ const AddPetPage = () => {
             </TextField>
           </div>
 
-          <TextField isRequired name="">
+          <TextField isRequired name="pet_description">
             <Label>Description:</Label>
             <TextArea
               className={"rounded-md shadow-none border"}
@@ -240,12 +305,12 @@ const AddPetPage = () => {
             />
           </TextField>
 
-          <TextField isRequired className={"w-full"}>
+          <TextField name="pet_owner_email" className={"w-full"}>
             <Label className="text-sm font-medium">Owner Email:</Label>
             <Input
+              value={user?.email}
               type="email"
               className="rounded-md border shadow-none"
-              value={""}
             />
           </TextField>
 

@@ -111,7 +111,7 @@ const Navbar = ({ sideBarLinks }) => {
 
               {showProfile && (
                 <div className="absolute top-13.5 right-0 bg-white px-3 py-2 border rounded-md transition-all duration-300">
-                  <Link href={"/dashboard"}>
+                  <Link href={"/my-request"}>
                     <p className="hover:bg-gray-200 px-2 py-.5 rounded-sm transition-all duration-300 flex items-center gap-2 text-black">
                       <ChartAreaStacked></ChartAreaStacked> Dashboard
                     </p>
