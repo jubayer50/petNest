@@ -1,5 +1,6 @@
 import { Button } from "@heroui/react";
 import Image from "next/image";
+import Link from "next/link";
 
 const PetCard = ({ pet }) => {
   const {
@@ -40,9 +41,11 @@ const PetCard = ({ pet }) => {
       </div>
 
       <div className="space-y-3 p-3">
-        <Button className={"rounded-md w-full bg-[#ED8262]"}>
-          View Detail
-        </Button>
+        <Link href={`/all-pets/${_id}`}>
+          <Button className={"rounded-md w-full bg-[#ED8262]"}>
+            View Detail
+          </Button>
+        </Link>
 
         <Button
           variant="outline"
