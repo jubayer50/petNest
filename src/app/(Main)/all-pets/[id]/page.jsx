@@ -1,3 +1,4 @@
+import AdoptionForm from "@/Components/AllPets/AdoptionForm/AdoptionForm";
 import { getPetById } from "@/lib/data";
 import Image from "next/image";
 
@@ -45,8 +46,8 @@ const PetDetailPage = async ({ params }) => {
 
   return (
     <div className="max-w-330 px-3 mx-auto my-8">
-      <div className="flex flex-col md:flex-row gap-7">
-        <div className="">
+      <div className="flex flex-col md:flex-row gap-10">
+        <div className="w-full md:w-[60%]">
           <div className="rounded-md h-150">
             <Image
               src={pet_image}
@@ -104,7 +105,9 @@ const PetDetailPage = async ({ params }) => {
           </div>
         </div>
 
-        <div></div>
+        <div className="w-full md:w-[40%]">
+          <AdoptionForm pet={pet}></AdoptionForm>
+        </div>
       </div>
     </div>
   );

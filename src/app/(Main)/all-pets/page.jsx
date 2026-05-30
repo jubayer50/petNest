@@ -1,5 +1,5 @@
 import PetCard from "@/Components/AllPets/PetCard/PetCard";
-import CategoryFilter from "@/Components/AllPets/SearchPet/CategoryFilter/CategoryFilter";
+import CategoryFilter from "@/Components/AllPets/CategoryFilter/CategoryFilter";
 import SearchPet from "@/Components/AllPets/SearchPet/SearchPet";
 import { getPets } from "@/lib/data";
 

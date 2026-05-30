@@ -40,21 +40,23 @@ const PetCard = ({ pet }) => {
         </h4>
       </div>
 
-      <div className="space-y-3 p-3">
+      <div className="p-3">
         <Link href={`/all-pets/${_id}`}>
           <Button className={"rounded-md w-full bg-[#ED8262]"}>
             View Detail
           </Button>
         </Link>
 
-        <Button
-          variant="outline"
-          className={
-            "rounded-md w-full hover:border-[#ED8262] hover:text-[#ED8262] transition-all duration-300"
-          }
-        >
-          Adopt Now
-        </Button>
+        <Link href={`/all-pets/${_id}`}>
+          <Button
+            variant="outline"
+            className={
+              "rounded-md w-full hover:border-[#ED8262] hover:text-[#ED8262] transition-all duration-300 mt-3"
+            }
+          >
+            Adopt Now
+          </Button>
+        </Link>
       </div>
     </div>
   );
