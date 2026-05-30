@@ -63,7 +63,9 @@ const PetDetailPage = async ({ params }) => {
               <span className="text-sm bg-[#ED8262] text-white rounded-full px-2 py-.5 w-fit">
                 {species}
               </span>
-              <span className="text-sm bg-green-600 text-white rounded-full px-2 py-.5 w-fit">
+              <span
+                className={`${status == "Available" ? "bg-green-600" : status == "Pending" ? "bg-yellow-500" : status == "Adopted" ? "bg-red-600" : ""} text-sm bg-green-600 text-white rounded-full px-2 py-.5 w-fit`}
+              >
                 {status}
               </span>
             </div>

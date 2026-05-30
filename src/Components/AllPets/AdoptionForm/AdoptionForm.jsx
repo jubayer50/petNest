@@ -9,13 +9,17 @@ import {
   Label,
   TextArea,
   TextField,
+  toast,
 } from "@heroui/react";
+import { useRouter } from "next/navigation";
 
 const AdoptionForm = ({ pet }) => {
   const { data: session } = authClient.useSession();
   const user = session?.user;
 
-  const { pet_name } = pet;
+  const { _id, pet_name, status } = pet;
+
+  const router = useRouter();
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -24,8 +28,39 @@ const AdoptionForm = ({ pet }) => {
 
     const formData = new FormData(form);
     const adoptedData = Object.fromEntries(formData.entries());
+    adoptedData["pet_id"] = _id;
+    adoptedData["user_id"] = user?.id;
 
-    console.log(adoptedData, "from adopt form");
+    // post api  request for pet adopt request
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/pets-adopt-request`,
+      {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(adoptedData),
+      },
+    );
+    const data = await res.json();
+
+    if (data) {
+      toast.success("Pet adopt request successful!");
+      form.reset();
+    }
+
+    // update/patch api request for pet card status change
+    const statusRes = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/pets/${_id}`,
+      {
+        method: "PATCH",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ status: "Pending" }), // TODO : set update information
+      },
+    );
+    const statusResData = await statusRes.json();
+
+    if (statusResData) {
+      router.refresh();
+    }
   };
 
   return (
@@ -73,8 +108,12 @@ const AdoptionForm = ({ pet }) => {
           />
         </TextField>
 
-        <Button type="submit" className={"bg-[#ED8262] rounded-md w-full"}>
-          Adopt Now
+        <Button
+          isDisabled={status === "Pending" || status === "Adopted"}
+          type="submit"
+          className={"bg-[#ED8262] rounded-md w-full"}
+        >
+          Adopt Request
         </Button>
       </Form>
     </div>

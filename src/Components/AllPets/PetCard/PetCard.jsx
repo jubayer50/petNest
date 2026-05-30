@@ -27,7 +27,9 @@ const PetCard = ({ pet }) => {
           {species}
         </p>
 
-        <p className="absolute top-2 right-2 bg-green-600 rounded-full text-sm px-2.5 py-.5 text-white">
+        <p
+          className={`${status == "Available" ? "bg-green-600" : status == "Pending" ? "bg-yellow-500" : status == "Adopted" ? "bg-red-600" : ""} absolute top-2 right-2  rounded-full text-sm px-2.5 py-.5 text-white`}
+        >
           {status}
         </p>
       </div>
@@ -49,6 +51,7 @@ const PetCard = ({ pet }) => {
 
         <Link href={`/all-pets/${_id}`}>
           <Button
+            isDisabled={status === "Pending" || status === "Adopted"}
             variant="outline"
             className={
               "rounded-md w-full hover:border-[#ED8262] hover:text-[#ED8262] transition-all duration-300 mt-3"
