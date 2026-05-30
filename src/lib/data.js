@@ -11,3 +11,12 @@ export const getPetById = async (id) => {
   const data = await res.json();
   return data;
 };
+
+// get pet for featured section
+export const featuredPetsData = async () => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/featured-pets`,
+  );
+  const data = await res.json();
+  return data;
+};
