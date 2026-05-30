@@ -1,3 +1,4 @@
+import Footer from "@/Components/Footer/Footer";
 import Navbar from "@/Components/Navbar/Navbar";
 
 const AuthLayout = ({ children }) => {
@@ -6,6 +7,8 @@ const AuthLayout = ({ children }) => {
       <Navbar></Navbar>
 
       <div>{children}</div>
+
+      <Footer></Footer>
     </div>
   );
 };

@@ -1,6 +1,12 @@
 "use client";
 
-import { ArrowRightFromSquare, Heart, Person, Plus } from "@gravity-ui/icons";
+import {
+  ArrowRightFromSquare,
+  Heart,
+  ListCheck,
+  Person,
+  Plus,
+} from "@gravity-ui/icons";
 import { Button } from "@heroui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -10,6 +16,15 @@ const Sidebar = () => {
 
   const sidebarLinks = (
     <>
+      <li>
+        <Link
+          href={"/my-listing"}
+          className={`${pathname == "/my-listing" ? "text-[#ED8262] font-bold" : ""} font-medium flex items-center gap-2`}
+        >
+          <ListCheck></ListCheck> My Listing
+        </Link>
+      </li>
+
       <li>
         <Link
           href={"/profile"}

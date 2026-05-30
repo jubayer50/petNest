@@ -11,6 +11,15 @@ const DashboardNavbar = () => {
     <>
       <li>
         <Link
+          href={"/my-listing"}
+          className={`${pathname == "/my-listing" ? "text-[#ED8262] font-bold" : ""} font-medium`}
+        >
+          My Listing
+        </Link>
+      </li>
+
+      <li>
+        <Link
           href={"/add-pet"}
           className={`${pathname == "/add-pet" ? "text-[#ED8262] font-bold" : ""} font-medium`}
         >
