@@ -1,6 +1,7 @@
 import { Button } from "@heroui/react";
 import Image from "next/image";
 import Link from "next/link";
+import DeletePet from "./DeletePet";
 
 const MyListingPetCard = ({ pet }) => {
   const {
@@ -87,7 +88,7 @@ const MyListingPetCard = ({ pet }) => {
 
         <Link href={`/all-pets/${_id}`}>
           <Button size="sm" className={"bg-[#ED8262] rounded-md"}>
-            View Detail
+            View
           </Button>
         </Link>
 
@@ -99,9 +100,7 @@ const MyListingPetCard = ({ pet }) => {
           Edit
         </Button>
 
-        <Button size="sm" variant="danger" className={"rounded-md"}>
-          Delete
-        </Button>
+        <DeletePet pet={pet}></DeletePet>
       </div>
     </div>
   );
